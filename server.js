@@ -44,7 +44,8 @@ app.use((req, res, next) => {
 app.use("/category_doc", express.static(path.join(__dirname, "/category_doc")));
 app.use("/sub_category_doc", express.static(path.join(__dirname, "/sub_category_doc")));
 
-///////////////////// Database ///////////////////////
+///////////////////// Database /////////////////////
+
 const db = require("./src/models_routes");
 
 
