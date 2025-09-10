@@ -1,0 +1,73 @@
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+
+// global.appRoot = path.resolve(__dirname);
+dotenv.config();
+
+const app = express();
+
+///////////////////// Middlewares /////////////////////
+
+// Body Parser (JSON + URL Encoded)
+app.use(bodyParser.json({ limit: "200mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "200mb" }));
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["Content-Type"],
+        credentials: true,
+    })
+);
+
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    next();
+});
+
+app.use("/category_doc", express.static(path.join(__dirname, "/category_doc")));
+app.use("/sub_category_doc", express.static(path.join(__dirname, "/sub_category_doc")));
+
+///////////////////// Database ///////////////////////
+const db = require("./src/models_routes");
+
+
+db.sequelize.sync()
+    .then(() => {
+        console.log("✅ Synced DB successfully...")
+    }).catch((err) => {
+        console.log("❌ Failed to sync DB:", err.message)
+    });
+
+
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to Daily Mart Application." });
+});
+
+///////////////////// Routes /////////////////////////
+
+require("./src/admin/Category/category/routes/category.routes")(app);
+require("./src/admin/Category/subCategory/routes/subCategory.routes")(app);
+
+///////////////////// Server /////////////////////////
+
+const PORT = process.env.SERVER_PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`\x1b[32m🚀 Server is running on port \x1b[36m${PORT}\x1b[0m`);
+});
