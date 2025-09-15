@@ -4,14 +4,12 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 
-// global.appRoot = path.resolve(__dirname);
 dotenv.config();
 
 const app = express();
 
 ///////////////////// Middlewares /////////////////////
 
-// Body Parser (JSON + URL Encoded)
 app.use(bodyParser.json({ limit: "200mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "200mb" }));
 
@@ -48,14 +46,12 @@ app.use("/sub_category_doc", express.static(path.join(__dirname, "/sub_category_
 
 const db = require("./src/models_routes");
 
-
 db.sequelize.sync()
     .then(() => {
         console.log("✅ Synced DB successfully...")
     }).catch((err) => {
         console.log("❌ Failed to sync DB:", err.message)
     });
-
 
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Daily Mart Application." });
@@ -68,7 +64,7 @@ require("./src/admin/Category/subCategory/routes/subCategory.routes")(app);
 
 ///////////////////// Server /////////////////////////
 
-const PORT = process.env.SERVER_PORT || 5000;
+const PORT = process.env.SERVER_PORT || 8000;
 app.listen(PORT, () => {
     console.log(`\x1b[32m🚀 Server is running on port \x1b[36m${PORT}\x1b[0m`);
 });

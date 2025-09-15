@@ -1,6 +1,6 @@
 const db = require("../../../../models_routes/index");
 const categoryDetails = db.CategoryModels;
-const baseUrl = "http://localhost:5000/";
+const baseUrl = "http://localhost:8000/";
 const path = require('path');
 
 /////////////// Create Category ///////////////
