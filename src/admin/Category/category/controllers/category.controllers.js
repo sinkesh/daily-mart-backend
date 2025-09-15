@@ -52,6 +52,24 @@ exports.Edit_Category = async (req, res) => {
     }
 };
 
+/////////////// Update Category Status ///////////////
+
+exports.Update_Category_Status = async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const { status } = req.body;
+        const editData = await categoryDetails.findOne({ where: { category_id: categoryId } });
+        if (!editData) {
+            return res.status(404).send({ code: 404, message: "Record Not Found" });
+        }
+        await categoryDetails.update({ status }, { where: { category_id: categoryId } });
+        return res.status(200).send({ code: 200, message: "Updated Status Successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+};
+
 /////////////// Get All Category ///////////////
 
 exports.Get_All_Active_Category = async (req, res) => {

@@ -72,6 +72,24 @@ exports.Edit_Sub_Category = async (req, res) => {
     }
 };
 
+/////////////// Update Sub Category Status ///////////////
+
+exports.Update_Sub_Category_Status = async (req, res) => {
+    try {
+        const subCategoryId = req.params.id;
+        const { status } = req.body;
+        const editData = await subCategoryDetails.findOne({ where: { sub_category_id: subCategoryId } });
+        if (!editData) {
+            return res.status(404).send({ code: 404, message: "Record Not Found" });
+        }
+        await subCategoryDetails.update({ status }, { where: { sub_category_id: subCategoryId } });
+        return res.status(200).send({ code: 200, message: "Updated Status Successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+};
+
 /////////////// Get All Sub Category ///////////////
 
 exports.Get_All_Active_Sub_Category = async (req, res) => {
