@@ -1,4 +1,4 @@
-const db = require("../../../../models_routes/index");
+const db = require("../../../../../models_routes/index");
 const categoryDetails = db.CategoryModels;
 const baseUrl = "http://localhost:8000/";
 const path = require('path');

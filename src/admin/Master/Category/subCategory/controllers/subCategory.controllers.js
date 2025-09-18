@@ -1,4 +1,4 @@
-const db = require("../../../../models_routes/index");
+const db = require("../../../../../models_routes/index");
 const subCategoryDetails = db.SubCategoryModels;
 const baseUrl = "http://localhost:8000/";
 const path = require('path');
@@ -19,7 +19,6 @@ exports.Create_Sub_Category = async (req, res) => {
         if (data) {
             return res.status(400).send({ code: 400, message: "Sub-Category Already Exists!" });
         }
-
         const response = await subCategoryDetails.create({
             category_id,
             sub_category_name,
@@ -29,12 +28,10 @@ exports.Create_Sub_Category = async (req, res) => {
             sub_category_image: filePath ? baseUrl + filePath : '',
             sub_category_banner: filePath2 ? baseUrl + filePath2 : ''
         });
-
         return res.status(200).send({ code: 200, message: "Sub-Category Created Successfully!", data: response });
-
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ code: 500, message: "Server Error" });
+        return res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
 };
 

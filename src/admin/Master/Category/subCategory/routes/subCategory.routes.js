@@ -1,5 +1,5 @@
 const SubCategoryController = require("../controllers/subCategory.controllers");
-const { upload } = require("../../../../middlewares/sub_category_doc")
+const { upload } = require("../../../../../middlewares/sub_category_doc")
 
 module.exports = app => {
     app.post("/api/v1/Create_Sub_Category", upload.fields([{ name: "sub_category_image", maxCount: 1 }, { name: "sub_category_banner", maxCount: 1 }]), SubCategoryController.Create_Sub_Category);

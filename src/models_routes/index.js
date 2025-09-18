@@ -19,7 +19,10 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.CategoryModels = require("../admin/Category/category/models/category.models")(sequelize, Sequelize);
-db.SubCategoryModels = require("../admin/Category/subCategory/models/subCategory.models")(sequelize, Sequelize);
+db.CategoryModels = require("../admin/Master/Category/category/models/category.models")(sequelize, Sequelize);
+db.SubCategoryModels = require("../admin/Master/Category/subCategory/models/subCategory.models")(sequelize, Sequelize);
+db.StockModels = require("../admin/Master/Stock/Models/StockModels")(sequelize, Sequelize);
+db.BrandModels = require("../admin/Master/Brand/Models/BrandModels")(sequelize, Sequelize);
+db.ProductModels = require("../admin/Product/Models/ProductModels")(sequelize, Sequelize);
 
 module.exports = db;

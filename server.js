@@ -59,8 +59,10 @@ app.get("/", (req, res) => {
 
 ///////////////////// Routes /////////////////////////
 
-require("./src/admin/Category/category/routes/category.routes")(app);
-require("./src/admin/Category/subCategory/routes/subCategory.routes")(app);
+require("./src/admin/Master/Category/category/routes/category.routes")(app);
+require("./src/admin/Master/Category/subCategory/routes/subCategory.routes")(app);
+require("./src/admin/Master/Stock/Routes/StockRoutes")(app);
+require("./src/admin/Master/Brand/Routes/BrandRoutes")(app);
 
 ///////////////////// Server /////////////////////////
 

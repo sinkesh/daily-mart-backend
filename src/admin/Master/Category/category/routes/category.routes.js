@@ -1,5 +1,5 @@
 const CategoryController = require("../controllers/category.controllers");
-const { upload } = require("../../../../middlewares/category_doc")
+const { upload } = require("../../../../../middlewares/category_doc")
 
 module.exports = app => {
     app.post("/api/v1/Create_Category", upload.single("category_image"), CategoryController.Create_Category);
