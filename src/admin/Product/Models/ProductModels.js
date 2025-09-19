@@ -77,9 +77,6 @@ module.exports = (sequelize, Sequelize) => {
         tags: {
             type: Sequelize.JSON
         },
-        images: {
-            type: Sequelize.JSON
-        },
         thumbnail_image: {
             type: Sequelize.STRING
         },

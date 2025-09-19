@@ -63,6 +63,8 @@ require("./src/admin/Master/Category/category/routes/category.routes")(app);
 require("./src/admin/Master/Category/subCategory/routes/subCategory.routes")(app);
 require("./src/admin/Master/Stock/Routes/StockRoutes")(app);
 require("./src/admin/Master/Brand/Routes/BrandRoutes")(app);
+require("./src/admin/Product/routes/ProductRoutes")(app);
+require("./src/user/Auth/UserRegister/Routes/UserRegisterRoutes")(app);
 
 ///////////////////// Server /////////////////////////
 

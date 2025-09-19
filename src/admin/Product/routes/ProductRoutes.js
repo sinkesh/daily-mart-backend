@@ -1,5 +1,5 @@
 const ProductController = require("../Controllers/ProductControllers");
-const { upload } = require("../../../../middlewares/product_doc")
+const { upload } = require("../../../middlewares/product_doc")
 
 module.exports = app => {
     app.post("/api/v1/Create_Product ", upload.fields([{ name: "sub_category_image", maxCount: 1 }, { name: "sub_category_banner", maxCount: 1 }]), ProductController.Create_Product );
