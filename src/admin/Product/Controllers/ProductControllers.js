@@ -8,8 +8,8 @@ const path = require('path');
 exports.Create_Product = async (req, res) => {
     try {
         const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, sku, hsn_code,
-            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, color, size, material,
-            tags, thumbnail_image, is_featured, created_by, updated_by } = req.body;
+            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
+            tags, is_featured, created_by, updated_by } = req.body;
 
         let thumbnailImage = req.files?.thumbnail_image?.[0]?.path || "";
         let videoUrl = req.files?.video_url?.[0]?.path || "";
@@ -19,8 +19,11 @@ exports.Create_Product = async (req, res) => {
 
         const getProductData = await productDetails.findOne({ where: { product_name: product_name } });
         if (getProductData) {
-            return res.status(403).send({ code: 403, message: "Already Exists " })
+            return res.status(403).send({ code: 403, message: "Product Name Already Exists " })
         }
+
+        const dimensionsJson = JSON.parse(dimensions);
+        const tagsJson = JSON.parse(tags);
 
         const response = await productDetails.create({
             product_name,
@@ -41,12 +44,12 @@ exports.Create_Product = async (req, res) => {
             reorder_level,
             warehouse_location,
             weight,
-            dimensions: filePath ? baseUrl + filePath : '',
+            dimensions: dimensionsJson,
             color,
             size,
             material,
-            tags,
-            thumbnail_image,
+            tags: tagsJson,
+            thumbnail_image: filePath ? baseUrl + filePath : '',
             video_url: filePath2 ? baseUrl + filePath2 : '',
             is_featured,
             created_by,
@@ -65,8 +68,8 @@ exports.Edit_Product = async (req, res) => {
     try {
         const productId = req.params.id;
         const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, sku, hsn_code,
-            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, color, size, material,
-            tags, thumbnail_image, is_featured, created_by, updated_by } = req.body;
+            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
+            tags, is_featured, created_by, updated_by } = req.body;
 
         const editData = await productDetails.findOne({ where: { product_id: productId } });
         if (!editData) {
@@ -83,6 +86,10 @@ exports.Edit_Product = async (req, res) => {
         if (alreadyExist) {
             return res.status(400).send({ code: 400, message: "Product Already Exists" });
         }
+
+        const dimensionsJson = JSON.parse(dimensions);
+        const tagsJson = JSON.parse(tags);
+
         await productDetails.update({
             product_name,
             product_slug,
@@ -102,12 +109,12 @@ exports.Edit_Product = async (req, res) => {
             reorder_level,
             warehouse_location,
             weight,
-            dimensions: filePath ? baseUrl + filePath : '',
+            dimensions: dimensionsJson,
             color,
             size,
             material,
-            tags,
-            thumbnail_image,
+            tags: tagsJson,
+            thumbnail_image: filePath ? baseUrl + filePath : '',
             video_url: filePath2 ? baseUrl + filePath2 : '',
             is_featured,
             created_by,

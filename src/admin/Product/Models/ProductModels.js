@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const StockTables = sequelize.define("product", {
+    const ProductTables = sequelize.define("product", {
         product_id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
@@ -21,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         brand_name: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         category_id: {
             type: Sequelize.INTEGER
@@ -99,5 +99,5 @@ module.exports = (sequelize, Sequelize) => {
     }, {
         freezeTableName: true
     });
-    return StockTables;
+    return ProductTables;
 };
