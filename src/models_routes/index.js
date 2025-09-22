@@ -25,5 +25,6 @@ db.StockModels = require("../admin/Master/Stock/Models/StockModels")(sequelize, 
 db.BrandModels = require("../admin/Master/Brand/Models/BrandModels")(sequelize, Sequelize);
 db.ProductModels = require("../admin/Product/Models/ProductModels")(sequelize, Sequelize);
 db.UserModels = require("../user/Auth/UserRegister/Models/UserRegisterModels")(sequelize, Sequelize);
+db.FaqModels = require("../admin/Master/Faq/Models/FaqModels")(sequelize, Sequelize);
 
 module.exports = db;
