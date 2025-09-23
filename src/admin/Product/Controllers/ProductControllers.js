@@ -22,9 +22,6 @@ exports.Create_Product = async (req, res) => {
             return res.status(403).send({ code: 403, message: "Product Name Already Exists " })
         }
 
-        const dimensionsJson = JSON.parse(dimensions);
-        const tagsJson = JSON.parse(tags);
-
         const response = await productDetails.create({
             product_name,
             product_slug,
@@ -44,11 +41,11 @@ exports.Create_Product = async (req, res) => {
             reorder_level,
             warehouse_location,
             weight,
-            dimensions: dimensionsJson,
+            dimensions,
             color,
             size,
             material,
-            tags: tagsJson,
+            tags,
             thumbnail_image: filePath ? baseUrl + filePath : '',
             video_url: filePath2 ? baseUrl + filePath2 : '',
             is_featured,
@@ -87,9 +84,6 @@ exports.Edit_Product = async (req, res) => {
             return res.status(400).send({ code: 400, message: "Product Already Exists" });
         }
 
-        const dimensionsJson = JSON.parse(dimensions);
-        const tagsJson = JSON.parse(tags);
-
         await productDetails.update({
             product_name,
             product_slug,
@@ -109,11 +103,11 @@ exports.Edit_Product = async (req, res) => {
             reorder_level,
             warehouse_location,
             weight,
-            dimensions: dimensionsJson,
+            dimensions,
             color,
             size,
             material,
-            tags: tagsJson,
+            tags,
             thumbnail_image: filePath ? baseUrl + filePath : '',
             video_url: filePath2 ? baseUrl + filePath2 : '',
             is_featured,

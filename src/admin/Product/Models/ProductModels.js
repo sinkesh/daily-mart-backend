@@ -63,7 +63,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.FLOAT
         },
         dimensions: {
-            type: Sequelize.JSON
+            type: Sequelize.STRING
         },
         color: {
             type: Sequelize.STRING
@@ -75,7 +75,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         tags: {
-            type: Sequelize.JSON
+            type: Sequelize.STRING
         },
         thumbnail_image: {
             type: Sequelize.STRING
