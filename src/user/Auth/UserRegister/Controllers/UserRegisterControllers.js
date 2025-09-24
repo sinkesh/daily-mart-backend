@@ -2,6 +2,10 @@ const db = require("../../../../models_routes/index");
 const UserDetails = db.UserModels;
 const baseUrl = "http://localhost:8000/";
 const path = require('path');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secretKey = "your_jwt_secret";
+const saltRounds = 10;
 
 /////////////// Create User ///////////////
 
@@ -44,6 +48,89 @@ exports.Create_User = async (req, res) => {
     };
 };
 
+
+
+exports.Login_User = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await UserDetails.findOne({ where: { email } });
+        if (!user) {
+            return res.status(400).send({ code: 400, message: "Invalid Email or Password" });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).send({ code: 400, message: "Invalid Email or Password" });
+        }
+
+        // Optionally generate JWT token
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, secretKey, { expiresIn: "1h" });
+
+        return res.status(200).send({
+            code: 200,
+            message: "Login Successful",
+            data: {
+                user: {
+                    id: user.id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    role: user.role
+                },
+                token
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+};
+
+
+exports.Change_Password = async (req, res) => {
+    try {
+        const { email, old_password, new_password, confirm_password } = req.body;
+
+        if (!old_password || !new_password || !confirm_password) {
+            return res.status(400).send({ code: 400, message: "All fields are required." });
+        }
+
+        if (new_password !== confirm_password) {
+            return res.status(400).send({ code: 400, message: "New password and confirm password do not match." });
+        }
+
+        // Find user
+        const user = await UserDetails.findOne({ where: { email } });
+        if (!user) {
+            return res.status(404).send({ code: 404, message: "User not found." });
+        }
+
+        // Verify old password
+        const isMatch = await bcrypt.compare(old_password, user.password);
+        if (!isMatch) {
+            return res.status(400).send({ code: 400, message: "Old password is incorrect." });
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(new_password, 10);
+
+        // Update password
+        user.password = hashedPassword;
+        await user.save();
+
+        return res.status(200).send({ code: 200, message: "Password changed successfully." });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+};
+
+
+
 /////////////// Edit User ///////////////
 
 exports.Edit_User = async (req, res) => {
@@ -58,13 +145,14 @@ exports.Edit_User = async (req, res) => {
         if (alreadyExist) {
             return res.status(400).send({ code: 400, message: "User Email Already Exits!" });
         }
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
         await UserDetails.update({
             first_name,
             last_name,
             user_name,
             email,
             is_email_verified,
-            password,
+            password: hashedPassword,
             phone_number,
             is_phone_verified,
             role,

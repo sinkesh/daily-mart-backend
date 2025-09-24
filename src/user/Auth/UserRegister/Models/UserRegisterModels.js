@@ -59,6 +59,9 @@ module.exports = (sequelize, Sequelize) => {
         last_login: {
             type: Sequelize.STRING
         },
+        token: {
+            type: Sequelize.STRING
+        },
         status: {
             type: Sequelize.ENUM("ACTIVE", "INACTIVE", "Blocked"),
             defaultValue: "ACTIVE"
