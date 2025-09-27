@@ -33,24 +33,35 @@ exports.Edit_Category = async (req, res) => {
     try {
         const categoryId = req.params.id;
         const { category_name, category_image } = req.body;
+
         const editData = await categoryDetails.findOne({ where: { category_id: categoryId } });
         if (!editData) {
             return res.status(404).send({ code: 404, message: "Record Not Found" });
         }
-        const alreadyExist = await categoryDetails.findOne({ where: { category_name: category_name } });
+
+        const alreadyExist = await categoryDetails.findOne({ where: { category_name } });
         if (alreadyExist && alreadyExist.category_id != categoryId) {
             return res.status(400).send({ code: 400, message: "Category Already Exists" });
         }
-        await categoryDetails.update({
-            category_name,
-            category_image
-        }, { where: { category_id: categoryId } });
-        return res.status(200).send({ code: 200, message: "Updated Successfully" });
+
+        let updatedData = { category_name, category_image };
+
+        if (req.file) {
+            let filePath = req.file.path.split(path.sep).join('/');
+            filePath = filePath.replace(/^public\//, '');
+            updatedData.category_image = baseUrl + filePath;
+        }
+
+        const updateData = await categoryDetails.update(updatedData, { where: { category_id: categoryId } });
+        return res.status(200).send({ code: 200, message: "Updated Successfully", data: updateData });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
 };
+
+
+
 
 /////////////// Update Category Status ///////////////
 

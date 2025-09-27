@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 app.use("/category_doc", express.static(path.join(__dirname, "/category_doc")));
 app.use("/sub_category_doc", express.static(path.join(__dirname, "/sub_category_doc")));
 app.use("/brand_doc", express.static(path.join(__dirname, "/brand_doc")));
+app.use("/banner_doc", express.static(path.join(__dirname, "/banner_doc")));
 app.use("/product_doc", express.static(path.join(__dirname, "/product_doc")));
 app.use("/user_register_doc", express.static(path.join(__dirname, "/user_register_doc")));
 
@@ -67,6 +68,7 @@ require("./src/admin/Master/Category/subCategory/routes/subCategory.routes")(app
 require("./src/admin/Master/Stock/Routes/StockRoutes")(app);
 require("./src/admin/Master/Faq/Routes/FaqRoutes")(app);
 require("./src/admin/Master/Brand/Routes/BrandRoutes")(app);
+require("./src/admin/Master/Banner/Routes/BannerRoutes")(app);
 require("./src/admin/Product/routes/ProductRoutes")(app);
 require("./src/user/Auth/UserRegister/Routes/UserRegisterRoutes")(app);
 
