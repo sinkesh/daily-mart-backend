@@ -11,7 +11,7 @@ const saltRounds = 10;
 
 exports.Create_User = async (req, res) => {
     try {
-        const { first_name, last_name, user_name, email, is_email_verified, password, phone_number, is_phone_verified, role, gender, date_of_birth, address, country, state, city, pincode, last_login } = req.body;
+        const { first_name, last_name, user_name, email, is_email_verified, password, phone_number, is_phone_verified, role, gender, date_of_birth, address, country, country_code, state, city, pincode, last_login } = req.body;
 
         let profileImage = req.files?.profile_image?.[0]?.path || "";
         let filePath = profileImage ? profileImage.split(path.sep).join('/').replace(/^public\//, '') : '';
@@ -35,6 +35,7 @@ exports.Create_User = async (req, res) => {
                 profile_image: filePath ? baseUrl + filePath : '',
                 address,
                 country,
+                country_code,
                 state,
                 city,
                 pincode,
