@@ -29,19 +29,28 @@ module.exports = (sequelize, Sequelize) => {
         category_name: {
             type: Sequelize.STRING
         },
-        sku: {
+        product_sku: {
+            type: Sequelize.STRING
+        },
+        uom: {
+            type: Sequelize.STRING
+        },
+        weight: {
             type: Sequelize.STRING
         },
         hsn_code: {
             type: Sequelize.STRING
         },
         unit_price: {
-            type: Sequelize.STRING
+            type: Sequelize.FLOAT
         },
-        unit_price: {
+        offer_price: {
             type: Sequelize.FLOAT
         },
         discount_price: {
+            type: Sequelize.FLOAT
+        },
+        discount_percent: {
             type: Sequelize.FLOAT
         },
         currency: {

@@ -70,7 +70,11 @@ require("./src/admin/Master/Faq/Routes/FaqRoutes")(app);
 require("./src/admin/Master/Brand/Routes/BrandRoutes")(app);
 require("./src/admin/Master/Banner/Routes/BannerRoutes")(app);
 require("./src/admin/Product/routes/ProductRoutes")(app);
+require("./src/admin/DiscountCoupon/Coupon/Routes/CouponRoutes")(app);
+require("./src/admin/DiscountCoupon/Discount/Routes/DiscountRoutes")(app);
+require("./src/admin/DiscountCoupon/PrepaidDiscount/Routes/PrepaidDiscountRoutes")(app);
 require("./src/user/Auth/UserRegister/Routes/UserRegisterRoutes")(app);
+require("./src/user/Cart/Routes/CartRoutes")(app);
 
 ///////////////////// Server /////////////////////////
 

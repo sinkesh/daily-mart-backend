@@ -24,8 +24,15 @@ db.SubCategoryModels = require("../admin/Master/Category/subCategory/models/subC
 db.StockModels = require("../admin/Master/Stock/Models/StockModels")(sequelize, Sequelize);
 db.BrandModels = require("../admin/Master/Brand/Models/BrandModels")(sequelize, Sequelize);
 db.ProductModels = require("../admin/Product/Models/ProductModels")(sequelize, Sequelize);
-db.UserModels = require("../user/Auth/UserRegister/Models/UserRegisterModels")(sequelize, Sequelize);
+db.CouponModels = require("../admin//DiscountCoupon/Coupon/Models/CouponModels")(sequelize, Sequelize);
+db.DiscountCouponModels = require("../admin//DiscountCoupon/Discount/Models/DiscountModels")(sequelize, Sequelize);
+db.PrepaidDiscountModels = require("../admin//DiscountCoupon/PrepaidDiscount/Models/PrepaidDiscountModels")(sequelize, Sequelize);
+db.ProductViewModels = require("../admin/Product/Models/ProductViewModels")(sequelize, Sequelize);
+db.GiftProductModels = require("../admin/Product/Models/GiftProductModels")(sequelize, Sequelize);
 db.FaqModels = require("../admin/Master/Faq/Models/FaqModels")(sequelize, Sequelize);
 db.BannerModels = require("../admin/Master/Banner/Models/BannerModels")(sequelize, Sequelize);
+db.CartModels = require("../user/Cart/Models/CartModels")(sequelize, Sequelize);
+db.UserModels = require("../user/Auth/UserRegister/Models/UserRegisterModels")(sequelize, Sequelize);
+db.FinalDiscountAmountModels = require("../user/Cart/Models/FinalDiscountAmountModels")(sequelize, Sequelize);
 
 module.exports = db;
