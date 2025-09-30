@@ -16,31 +16,31 @@ module.exports = (sequelize, Sequelize) => {
         },
         product_view_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         add_to_cart_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         add_to_wishlish_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         checkout_started_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         checkout_address_details_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         checkout_completed_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         payment_completed_count: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         status: {
             type: Sequelize.ENUM("ACTIVE", "INACTIVE"),

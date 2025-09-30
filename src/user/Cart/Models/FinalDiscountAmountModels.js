@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         is_coupon_apply: {
             type: Sequelize.BOOLEAN(true, false),
-            default: false
+            defaultValue: false
         },
         status: {
             type: Sequelize.ENUM("ACTIVE", "INACTIVE", "Blocked"),
