@@ -59,62 +59,12 @@ exports.Create_Add_Cart = async (req, res) => {
     }
 };
 
-
-
-
-// exports.Create_Add_Cart = async (req, res) => {
-//     try {
-//         const { user_id, product_id, quantity } = req.body;
-
-//         const productViewData = await ProductViewDetails.findOne({ where: { user_id: user_id } });
-//         if (productViewData) {
-//             let increaseView = (productViewData.add_to_cart_count += 1);
-//             await ProductViewDetails.update({ add_to_cart_count: increaseView }, { where: { product_view_id: productViewData.product_view_id } });
-//         } else {
-//             let productview_count = 1;
-//             await ProductViewDetails.create({
-//                 add_to_cart_count: productview_count,
-//                 user_id: user_id,
-//             });
-//         }
-//         const productFind = await CartDetails.findOne({ where: { user_id: user_id, product_id: product_id, is_gift: false } });
-
-//         if (productFind) {
-//             productFind.quantity += quantity;
-//             productFind.save();
-//             return res.status(200).send({ code: 403, message: "Quantity Update Successfully" });
-//         } else {
-//             const response = await CartDetails.create({
-//                 quantity,
-//                 user_id,
-//                 product_id,
-//             });
-//             const giftProduct = await GiftProductDetails.findOne({ where: { product_id: response.product_id, status: "ACTIVE" } });
-//             if (giftProduct) {
-//                 var gift_data = await CartDetails.create({
-//                     quantity: 1,
-//                     user_id,
-//                     product_id: giftProduct.gift_item[0].product_id,
-//                     is_gift: true,
-//                 });
-//             }
-//             return res.status(200).send({ status: 200, message: "Add to Cart Successfully!", result: response, gift_data });
-//         }
-//     } catch (error) {
-//         console.log(error, "Error");
-//         return res.status(500).send({ code: 500, message: "Internal Server Error" });
-//     }
-// };
-
 exports.Increase_Quantity = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
-
-        if (!user_id || !product_id) {
+        if (user_id === undefined || user_id === null || !product_id) {
             return res.status(400).send({ status: 400, message: "user_id and product_id are required" });
         }
-
-        // Fetch product data
         const productData = await ProductDetails.findOne({ where: { product_id } });
         if (!productData || Number(productData.stock_quantity) <= 0) {
             return res.status(400).send({ status: 400, message: "Product is out of stock" });
@@ -154,16 +104,20 @@ exports.Increase_Quantity = async (req, res) => {
     }
 };
 
+
 exports.Decrease_Quantity = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
-        if (!user_id || !product_id) {
+
+        if (user_id === undefined || user_id === null || product_id === undefined || product_id === null) {
             return res.status(400).send({ status: 400, message: "user_id and product_id are required" });
         }
+
         let cartItem = await CartDetails.findOne({ where: { user_id: user_id, product_id: product_id, is_gift: false } });
         if (!cartItem) {
             return res.status(404).send({ status: 404, message: "Cart item not found" });
         }
+
         const newQuantity = Math.max(cartItem.quantity - 1, 1);
         cartItem.quantity = newQuantity;
         await cartItem.save();
@@ -228,7 +182,7 @@ exports.Get_All_Cart = async (req, res) => {
 exports.Delete_Cart = async (req, res) => {
     try {
         const { user_id, product_id, is_gift } = req.body;
-        if (!user_id || !product_id) {
+        if (user_id === undefined || user_id === null || product_id === undefined || product_id === null) {
             return res.status(400).send({ status: 400, message: "user_id and product_id are required" });
         }
         let dltData = null;
