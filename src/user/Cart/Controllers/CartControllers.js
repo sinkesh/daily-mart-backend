@@ -177,7 +177,7 @@ exports.Decrease_Quantity = async (req, res) => {
 
 exports.Get_All_Cart = async (req, res) => {
     try {
-        const getAllData = await CartDetails.findAll({ where: { status: "ACTIVE" } });
+        const getAllData = await CartDetails.findAll({ where: { status: "ACTIVE" }, order: [['cart_id', 'DESC']] });
 
         if (!getAllData || getAllData.length === 0) {
             return res.status(404).send({ code: 404, message: "Record Not Found" });
@@ -188,7 +188,7 @@ exports.Get_All_Cart = async (req, res) => {
 
         for (const cartItem of getAllData) {
             const product = await ProductDetails.findByPk(cartItem.product_id, {
-                attributes: ["product_id", "product_name", "offer_price", "thumbnail_image", "uom", "weight", "brand_name", "product_sku", "discount_percent", "HSN_code", "category_name"],
+                attributes: ["product_id", "product_name", "offer_price", "thumbnail_image", "uom", "weight", "brand_name", "product_sku", "discount_percent", "unit_price", "discount_price", "HSN_code", "category_name"],
             });
 
             if (!product) continue;
@@ -209,6 +209,8 @@ exports.Get_All_Cart = async (req, res) => {
                 brand_name: product.brand_name,
                 product_sku: product.product_sku,
                 discount_percent: product.discount_percent,
+                unit_price: product.unit_price,
+                discount_price: product.discount_price,
                 hsn_code: product.hsn_code,
                 category_name: product.category_name,
                 status: cartItem.status,

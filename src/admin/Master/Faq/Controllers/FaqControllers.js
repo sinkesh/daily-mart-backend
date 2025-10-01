@@ -69,7 +69,7 @@ exports.Update_Faq_Status = async (req, res) => {
 
 exports.Get_All_Active_Faq = async (req, res) => {
     try {
-        const getAllData = await faqDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await faqDetails.findAll({ where: { status: "ACTIVE" }, order: [['faq_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Faq Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -81,7 +81,7 @@ exports.Get_All_Active_Faq = async (req, res) => {
 
 exports.Get_All_Faq = async (req, res) => {
     try {
-        const getAllData = await faqDetails.findAll()
+        const getAllData = await faqDetails.findAll({ where: { order: [['faq_id', 'DESC']] } })
         return res.status(200).send({ code: 200, message: "Fetch All Faq Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

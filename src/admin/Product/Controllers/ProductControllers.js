@@ -7,8 +7,8 @@ const path = require('path');
 
 exports.Create_Product = async (req, res) => {
     try {
-        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, sku, hsn_code,
-            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
+        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code,
+            unit_price, offer_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
             tags, is_featured, created_by, updated_by } = req.body;
 
         let thumbnailImage = req.files?.thumbnail_image?.[0]?.path || "";
@@ -31,9 +31,11 @@ exports.Create_Product = async (req, res) => {
             brand_name,
             category_id,
             category_name,
-            sku,
+            product_sku,
+            uom,
             hsn_code,
             unit_price,
+            offer_price,
             discount_price,
             currency,
             tax_rate,
@@ -64,8 +66,8 @@ exports.Create_Product = async (req, res) => {
 exports.Edit_Product = async (req, res) => {
     try {
         const productId = req.params.id;
-        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, sku, hsn_code,
-            unit_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
+        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code,
+            unit_price, offer_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
             tags, is_featured, created_by, updated_by } = req.body;
 
         const editData = await productDetails.findOne({ where: { product_id: productId } });
@@ -93,9 +95,11 @@ exports.Edit_Product = async (req, res) => {
             brand_name,
             category_id,
             category_name,
-            sku,
+            product_sku,
+            uom,
             hsn_code,
             unit_price,
+            offer_price,
             discount_price,
             currency,
             tax_rate,
@@ -143,7 +147,7 @@ exports.Update_Product_Status = async (req, res) => {
 
 exports.Get_All_Active_Product = async (req, res) => {
     try {
-        const getAllData = await productDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await productDetails.findAll({ where: { status: "ACTIVE" }, order: [['product_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Product Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -155,7 +159,7 @@ exports.Get_All_Active_Product = async (req, res) => {
 
 exports.Get_All_Product = async (req, res) => {
     try {
-        const getAllData = await productDetails.findAll()
+        const getAllData = await productDetails.findAll({ order: [['product_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Product Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

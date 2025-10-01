@@ -76,7 +76,7 @@ exports.Update_Stock_Status = async (req, res) => {
 
 exports.Get_All_Active_Stock = async (req, res) => {
     try {
-        const getAllData = await StockDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await StockDetails.findAll({ where: { status: "ACTIVE" }, order: [['stock_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Brand Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -88,7 +88,7 @@ exports.Get_All_Active_Stock = async (req, res) => {
 
 exports.Get_All_Stock = async (req, res) => {
     try {
-        const getAllData = await StockDetails.findAll()
+        const getAllData = await StockDetails.findAll({ where: { order: [['stock_id', 'DESC']] } })
         return res.status(200).send({ code: 200, message: "Fetch All Brand Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

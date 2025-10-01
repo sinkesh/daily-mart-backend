@@ -91,7 +91,7 @@ exports.Update_Sub_Category_Status = async (req, res) => {
 
 exports.Get_All_Active_Sub_Category = async (req, res) => {
     try {
-        const getAllData = await subCategoryDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await subCategoryDetails.findAll({ where: { status: "ACTIVE" }, order: [['sub_category_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Sub Category Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -103,7 +103,7 @@ exports.Get_All_Active_Sub_Category = async (req, res) => {
 
 exports.Get_All_Sub_Category = async (req, res) => {
     try {
-        const getAllData = await subCategoryDetails.findAll()
+        const getAllData = await subCategoryDetails.findAll({ where: { order: [['sub_category_id', 'DESC']] } })
         return res.status(200).send({ code: 200, message: "Fetch All Sub Category Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

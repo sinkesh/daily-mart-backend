@@ -85,7 +85,7 @@ exports.Update_Category_Status = async (req, res) => {
 
 exports.Get_All_Active_Category = async (req, res) => {
     try {
-        const getAllData = await categoryDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await categoryDetails.findAll({ where: { status: "ACTIVE" }, order: [['category_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Category Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -97,7 +97,7 @@ exports.Get_All_Active_Category = async (req, res) => {
 
 exports.Get_All_Category = async (req, res) => {
     try {
-        const getAllData = await categoryDetails.findAll()
+        const getAllData = await categoryDetails.findAll({ where: { order: [['category_id', 'DESC']] } })
         return res.status(200).send({ code: 200, message: "Fetch All Category Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
