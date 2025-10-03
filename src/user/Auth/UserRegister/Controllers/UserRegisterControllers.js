@@ -208,7 +208,7 @@ exports.Get_All_Active_User = async (req, res) => {
 
 exports.Get_All_User = async (req, res) => {
     try {
-        const getAllData = await UserDetails.findAll({ where: { order: [['user_id', 'DESC']] } })
+        const getAllData = await UserDetails.findAll({ order: [['user_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All User Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

@@ -81,7 +81,7 @@ exports.Get_All_Active_Brand = async (req, res) => {
 
 exports.Get_All_Brand = async (req, res) => {
     try {
-        const getAllData = await BrandDetails.findAll({ where: { order: [['brand_id', 'DESC']] } })
+        const getAllData = await BrandDetails.findAll({ order: [['brand_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Brand Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
