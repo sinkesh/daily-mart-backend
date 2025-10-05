@@ -171,14 +171,14 @@ exports.Edit_User = async (req, res) => {
         if (alreadyExist) {
             return res.status(400).send({ code: 400, message: "User Email Already Exits!" });
         }
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        let profileImage = req.files?.profile_image?.[0]?.path || "";
+        let filePath = profileImage ? profileImage.split(path.sep).join('/').replace(/^public\//, '') : '';
         await UserDetails.update({
             first_name,
             last_name,
             user_name,
             email,
             is_email_verified,
-            password: hashedPassword,
             phone_number,
             is_phone_verified,
             role,
