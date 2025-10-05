@@ -4,7 +4,7 @@ const baseUrl = "http://localhost:8000/";
 const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const secretKey = "your_jwt_secret";
+const { secretKey } = require("../../../../../server");
 
 /////////////// Create User ///////////////
 
@@ -64,37 +64,40 @@ exports.Login_User = async (req, res) => {
         if (!isMatch) {
             return res.status(400).send({ code: 400, message: "Invalid Email or Password" });
         }
-
+        if (!secretKey) {
+            throw new Error("JWT secret key is not defined. Please set JWT_SECRET in .env");
+        }
         const token = jwt.sign(
             {
                 user_id: user.user_id,
                 email: user.email,
-                role: user.role
+                role: user.role,
             },
             secretKey,
             { expiresIn: "1h" }
         );
 
-        await UserDetails.update({ token: token }, { where: { user_id: user.user_id } });
+        await UserDetails.update({ token }, { where: { user_id: user.user_id } });
+
         return res.status(200).send({
             code: 200,
             message: "Login Successfully",
             data: {
                 user: {
-                    id: user.id,
+                    id: user.user_id,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     email: user.email,
                     gender: user.gender,
                     phone_number: user.phone_number,
                     role: user.role,
-                    token: token
-                }
-            }
+                    token: token,
+                },
+                token: token,
+            },
         });
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
 };
@@ -161,30 +164,39 @@ exports.Change_Password = async (req, res) => {
 
 exports.Edit_User = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const { first_name, last_name, user_name, email, is_email_verified, password, phone_number, is_phone_verified, role, gender, date_of_birth, address, country, state, city, pincode, last_login } = req.body;
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) {
+            return res.status(401).send({ code: 401, message: "Token missing or unauthorized" });
+        }
+
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.user_id;
+
         const editData = await UserDetails.findOne({ where: { user_id: userId } });
         if (!editData) {
-            return res.status(404).send({ code: 404, message: "Record Not Found" });
+            return res.status(404).send({ code: 404, message: "User not found" });
         }
-        const alreadyExist = await UserDetails.findOne({ where: { email: email } });
+
+        const { first_name, last_name, user_name, email, phone_number, role, gender, date_of_birth, address, country, state, city, pincode, last_login } = req.body;
+
+        const alreadyExist = await UserDetails.findOne({ where: { email, user_id: { [db.Sequelize.Op.ne]: userId } } });
         if (alreadyExist) {
-            return res.status(400).send({ code: 400, message: "User Email Already Exits!" });
+            return res.status(400).send({ code: 400, message: "User Email Already Exists!" });
         }
+
         let profileImage = req.files?.profile_image?.[0]?.path || "";
         let filePath = profileImage ? profileImage.split(path.sep).join('/').replace(/^public\//, '') : '';
+
         await UserDetails.update({
             first_name,
             last_name,
             user_name,
             email,
-            is_email_verified,
             phone_number,
-            is_phone_verified,
             role,
             gender,
             date_of_birth,
-            profile_image: filePath ? baseUrl + filePath : '',
+            profile_image: filePath ? baseUrl + filePath : editData.profile_image,
             address,
             country,
             state,
@@ -194,10 +206,50 @@ exports.Edit_User = async (req, res) => {
         }, { where: { user_id: userId } });
         return res.status(200).send({ code: 200, message: "Updated Successfully" });
     } catch (error) {
-        console.log(error);
+        console.error("Error in Edit_User:", error);
         return res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
 };
+
+// exports.Edit_User = async (req, res) => {
+//     try {
+//         const userId = req.params.id;
+//         const { first_name, last_name, user_name, email, is_email_verified, password, phone_number, is_phone_verified, role, gender, date_of_birth, address, country, state, city, pincode, last_login } = req.body;
+//         const editData = await UserDetails.findOne({ where: { user_id: userId } });
+//         if (!editData) {
+//             return res.status(404).send({ code: 404, message: "Record Not Found" });
+//         }
+//         const alreadyExist = await UserDetails.findOne({ where: { email: email } });
+//         if (alreadyExist) {
+//             return res.status(400).send({ code: 400, message: "User Email Already Exits!" });
+//         }
+//         let profileImage = req.files?.profile_image?.[0]?.path || "";
+//         let filePath = profileImage ? profileImage.split(path.sep).join('/').replace(/^public\//, '') : '';
+//         await UserDetails.update({
+//             first_name,
+//             last_name,
+//             user_name,
+//             email,
+//             is_email_verified,
+//             phone_number,
+//             is_phone_verified,
+//             role,
+//             gender,
+//             date_of_birth,
+//             profile_image: filePath ? baseUrl + filePath : '',
+//             address,
+//             country,
+//             state,
+//             city,
+//             pincode,
+//             last_login
+//         }, { where: { user_id: userId } });
+//         return res.status(200).send({ code: 200, message: "Updated Successfully" });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send({ code: 500, message: "Internal Server Error" });
+//     }
+// };
 
 /////////////// Update User Status ///////////////
 
@@ -245,17 +297,27 @@ exports.Get_All_User = async (req, res) => {
 
 exports.Get_ById_User = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const getData = await UserDetails.findOne({ where: { user_id: userId } });
-        if (getData) {
-            return res.status(200).send({ code: 200, message: "Fetch Data Successfully", data: getData });
-        } else {
-            return res.status(404).send({ code: 404, message: "Record Not Found" });
-        };
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).send({ code: 401, message: "Token missing or unauthorized" });
+        }
+        const token = authHeader.split(" ")[1];
+        let decoded;
+        try {
+            decoded = jwt.verify(token, secretKey);
+        } catch (err) {
+            return res.status(401).send({ code: 401, message: "Invalid or expired token" });
+        }
+        const userId = decoded.user_id;
+        const user = await UserDetails.findOne({ where: { user_id: userId }, attributes: { exclude: ["password"] } });
+        if (!user) {
+            return res.status(404).send({ code: 404, message: "User not found" });
+        }
+        return res.status(200).send({ code: 200, message: "User fetched successfully", data: user });
     } catch (error) {
-        console.log(error);
+        console.error("Error", error);
         return res.status(500).send({ code: 500, message: "Internal Server Error" });
-    };
+    }
 };
 
 /////////////// Delete User ///////////////

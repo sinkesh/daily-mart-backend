@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 
 dotenv.config();
 
+const secretKey = process.env.JWT_SECRET;
+module.exports = { secretKey };
+
+
 const app = express();
 
 ///////////////////// Middlewares /////////////////////
