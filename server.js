@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 
 dotenv.config();
 
+const secretKey = process.env.JWT_SECRET;
+module.exports = { secretKey };
+
+
 const app = express();
 
 ///////////////////// Middlewares /////////////////////
@@ -23,7 +27,7 @@ app.use(
     cors({
         origin: "*",
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-        allowedHeaders: ["Content-Type"],
+        allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
     })
 );
@@ -50,12 +54,12 @@ app.use("/user_register_doc", express.static(path.join(__dirname, "/user_registe
 
 const db = require("./src/models_routes");
 
-db.sequelize.sync({ alter: true })
-    .then(() => {
-        console.log("✅ Synced DB successfully...")
-    }).catch((err) => {
-        console.log("❌ Failed to sync DB:", err.message)
-    });
+// db.sequelize.sync({ alter: true })
+//     .then(() => {
+//         console.log("✅ Synced DB successfully...")
+//     }).catch((err) => {
+//         console.log("❌ Failed to sync DB:", err.message)
+//     });
 
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Daily Mart Application." });

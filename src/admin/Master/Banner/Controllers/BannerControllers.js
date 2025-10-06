@@ -82,7 +82,7 @@ exports.Update_Banner_Status = async (req, res) => {
 
 exports.Get_All_Active_Banner = async (req, res) => {
     try {
-        const getAllData = await bannerDetails.findAll({ where: { status: "ACTIVE" } })
+        const getAllData = await bannerDetails.findAll({ where: { status: "ACTIVE" }, order: [['banner_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Banner Successfully", data: getAllData });
     } catch (error) {
         console.log(error);
@@ -94,7 +94,7 @@ exports.Get_All_Active_Banner = async (req, res) => {
 
 exports.Get_All_Banner = async (req, res) => {
     try {
-        const getAllData = await bannerDetails.findAll()
+        const getAllData = await bannerDetails.findAll({ order: [['banner_id', 'DESC']] })
         return res.status(200).send({ code: 200, message: "Fetch All Banner Successfully", data: getAllData });
     } catch (error) {
         console.log(error);

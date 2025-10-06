@@ -13,11 +13,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         quantity: {
             type: Sequelize.INTEGER,
-            default: 1
+            defaultValue: 1
         },
         offer_price: {
             type: Sequelize.INTEGER,
-            default: 0
+            defaultValue: 0
         },
         gift_item: {
             type: Sequelize.JSON

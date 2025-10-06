@@ -16,7 +16,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         is_gift: {
             type: Sequelize.BOOLEAN(true, false),
-            default: false
+            defaultValue: false
         },
         status: {
             type: Sequelize.ENUM("ACTIVE", "INACTIVE", "Blocked"),
