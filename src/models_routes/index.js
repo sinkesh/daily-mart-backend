@@ -23,6 +23,7 @@ db.CategoryModels = require("../admin/Master/Category/category/models/category.m
 db.SubCategoryModels = require("../admin/Master/Category/subCategory/models/subCategory.models")(sequelize, Sequelize);
 db.StockModels = require("../admin/Master/Stock/Models/StockModels")(sequelize, Sequelize);
 db.BrandModels = require("../admin/Master/Brand/Models/BrandModels")(sequelize, Sequelize);
+db.RoleModels = require("../admin/Master/Role/Models/RoleModels")(sequelize, Sequelize);
 db.ProductModels = require("../admin/Product/Models/ProductModels")(sequelize, Sequelize);
 db.CouponModels = require("../admin//DiscountCoupon/Coupon/Models/CouponModels")(sequelize, Sequelize);
 db.DiscountCouponModels = require("../admin//DiscountCoupon/Discount/Models/DiscountModels")(sequelize, Sequelize);

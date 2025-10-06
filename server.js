@@ -69,6 +69,7 @@ require("./src/admin/Master/Stock/Routes/StockRoutes")(app);
 require("./src/admin/Master/Faq/Routes/FaqRoutes")(app);
 require("./src/admin/Master/Brand/Routes/BrandRoutes")(app);
 require("./src/admin/Master/Banner/Routes/BannerRoutes")(app);
+require("./src/admin/Master/Role/Routes/RoleRoutes")(app);
 require("./src/admin/Product/routes/ProductRoutes")(app);
 require("./src/admin/DiscountCoupon/Coupon/Routes/CouponRoutes")(app);
 require("./src/admin/DiscountCoupon/Discount/Routes/DiscountRoutes")(app);
