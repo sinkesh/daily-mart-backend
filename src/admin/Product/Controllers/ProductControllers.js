@@ -79,10 +79,10 @@ exports.Edit_Product = async (req, res) => {
         let filePath = thumbnailImage ? thumbnailImage.split(path.sep).join('/').replace(/^public\//, '') : '';
         let filePath2 = videoUrl ? videoUrl.split(path.sep).join('/').replace(/^public\//, '') : '';
 
-        const alreadyExist = await productDetails.findOne({ where: { product_name: product_name } });
-        if (alreadyExist) {
-            return res.status(400).send({ code: 400, message: "Product Already Exists" });
-        }
+        // const alreadyExist = await productDetails.findOne({ where: { product_name: product_name } });
+        // if (alreadyExist) {
+        //     return res.status(400).send({ code: 400, message: "Product Already Exists" });
+        // }
 
         await productDetails.update({
             product_name,
