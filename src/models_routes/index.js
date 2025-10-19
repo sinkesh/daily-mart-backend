@@ -33,6 +33,7 @@ db.GiftProductModels = require("../admin/Product/Models/GiftProductModels")(sequ
 db.FaqModels = require("../admin/Master/Faq/Models/FaqModels")(sequelize, Sequelize);
 db.BannerModels = require("../admin/Master/Banner/Models/BannerModels")(sequelize, Sequelize);
 db.CartModels = require("../user/Cart/Models/CartModels")(sequelize, Sequelize);
+db.WishlistModels = require("../user/Favorite/Models/FavoriteModels")(sequelize, Sequelize);
 db.UserModels = require("../user/Auth/UserRegister/Models/UserRegisterModels")(sequelize, Sequelize);
 db.FinalDiscountAmountModels = require("../user/Cart/Models/FinalDiscountAmountModels")(sequelize, Sequelize);
 

@@ -80,6 +80,7 @@ require("./src/admin/DiscountCoupon/Discount/Routes/DiscountRoutes")(app);
 require("./src/admin/DiscountCoupon/PrepaidDiscount/Routes/PrepaidDiscountRoutes")(app);
 require("./src/user/Auth/UserRegister/Routes/UserRegisterRoutes")(app);
 require("./src/user/Cart/Routes/CartRoutes")(app);
+require("./src/user/Favorite/Routes/FavoriteRoutes")(app);
 
 ///////////////////// Server /////////////////////////
 
