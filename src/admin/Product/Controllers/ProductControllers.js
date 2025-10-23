@@ -7,9 +7,9 @@ const path = require('path');
 
 exports.Create_Product = async (req, res) => {
     try {
-        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code,
-            unit_price, offer_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
-            tags, is_featured, created_by, updated_by } = req.body;
+        const { product_name, product_slug, product_description, short_description, how_to_use, safety_instruction, ingredients, composition_information, additional_information,
+            long_description, highlight, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code, unit_price, offer_price, discount_price, currency, tax_rate,
+            stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material, tags, is_featured, created_by, updated_by } = req.body;
 
         let thumbnailImage = req.files?.thumbnail_image?.[0]?.path || "";
         let videoUrl = req.files?.video_url?.[0]?.path || "";
@@ -27,6 +27,13 @@ exports.Create_Product = async (req, res) => {
             product_slug,
             product_description,
             short_description,
+            how_to_use,
+            safety_instruction,
+            ingredients,
+            composition_information,
+            additional_information,
+            long_description,
+            highlight,
             brand_name,
             category_name,
             product_sku,
@@ -64,10 +71,9 @@ exports.Create_Product = async (req, res) => {
 exports.Edit_Product = async (req, res) => {
     try {
         const productId = req.params.id;
-        const { product_name, product_slug, product_description, short_description, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code,
-            unit_price, offer_price, discount_price, currency, tax_rate, stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material,
-            tags, is_featured, created_by, updated_by } = req.body;
-
+        const { product_name, product_slug, product_description, short_description, how_to_use, safety_instruction, ingredients, composition_information, additional_information,
+            long_description, highlight, brand_id, brand_name, category_id, category_name, product_sku, uom, hsn_code, unit_price, offer_price, discount_price, currency, tax_rate,
+            stock_quantity, reorder_level, warehouse_location, weight, dimensions, color, size, material, tags, is_featured, created_by, updated_by } = req.body;
         const editData = await productDetails.findOne({ where: { product_id: productId } });
         if (!editData) {
             return res.status(404).send({ code: 404, message: "Record Not Found" });
@@ -89,6 +95,13 @@ exports.Edit_Product = async (req, res) => {
             product_slug,
             product_description,
             short_description,
+            how_to_use,
+            safety_instruction,
+            ingredients,
+            composition_information,
+            additional_information,
+            long_description,
+            highlight,
             brand_name,
             category_name,
             product_sku,

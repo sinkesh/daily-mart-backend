@@ -17,6 +17,27 @@ module.exports = (sequelize, Sequelize) => {
         short_description: {
             type: Sequelize.STRING
         },
+        how_to_use: {
+            type: Sequelize.STRING
+        },
+        safety_instruction: {
+            type: Sequelize.STRING
+        },
+        ingredients: {
+            type: Sequelize.STRING
+        },
+        composition_information: {
+            type: Sequelize.STRING
+        },
+        additional_information: {
+            type: Sequelize.STRING
+        },
+        long_description: {
+            type: Sequelize.STRING
+        },
+        highlight: {
+            type: Sequelize.STRING
+        },
         brand_id: {
             type: Sequelize.INTEGER
         },
