@@ -8,7 +8,13 @@ module.exports = (sequelize, Sequelize) => {
         category_name: {
             type: Sequelize.STRING
         },
+        category_code: {
+            type: Sequelize.STRING
+        },
         category_image: {
+            type: Sequelize.STRING
+        },
+        category_description: {
             type: Sequelize.STRING
         },
         status: {

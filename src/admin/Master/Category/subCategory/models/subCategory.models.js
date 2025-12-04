@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
         sub_category_name: {
             type: Sequelize.STRING
         },
+        sub_category_code: {
+            type: Sequelize.STRING
+        },
         category_name: {
             type: Sequelize.STRING
         },

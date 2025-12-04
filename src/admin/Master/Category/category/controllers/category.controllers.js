@@ -9,14 +9,26 @@ exports.Create_Category = async (req, res) => {
     try {
         const { category_name } = req.body;
         const categoryImage = req.file;
+
         let filePath = categoryImage.path.split(path.sep).join('/');
         filePath = filePath.replace(/^public\//, '');
+
         const getCategoryData = await categoryDetails.findOne({ where: { category_name: category_name } })
+        const lastCategory = await categoryDetails.findOne({ order: [['category_id', 'DESC']]  });
+
+        let categoryCode = "CAT-001";
+
+        if (lastCategory && lastCategory.category_code) {
+            let lastNumber = parseInt(lastCategory.category_code.split("-")[1]);
+            let nextNum = lastNumber + 1;
+            categoryCode = `CAT-${String(nextNum).padStart(3, "0")}`;
+        }
         if (getCategoryData) {
             return res.status(400).send({ code: 400, message: "Category Already Exits!" })
         } else {
             const response = await categoryDetails.create({
                 category_name,
+                category_code: categoryCode,
                 category_image: baseUrl + filePath
             });
             return res.status(200).send({ code: 200, message: "Created Successfully!", data: response });

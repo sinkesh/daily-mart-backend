@@ -15,20 +15,31 @@ exports.Create_Sub_Category = async (req, res) => {
         let filePath = subCategoryImage ? subCategoryImage.split(path.sep).join('/').replace(/^public\//, '') : '';
         let filePath2 = bannerImage ? bannerImage.split(path.sep).join('/').replace(/^public\//, '') : '';
 
+        const lastSubCategory = await subCategoryDetails.findOne({ order: [['sub_category_id', 'DESC']]  });
+
+        let subCategoryCode = "SUB-CAT-001";
+
+        if (lastSubCategory && lastSubCategory.sub_category_code) {
+            let lastNumber = parseInt(lastSubCategory.sub_category_code.split("-")[1]);
+            let nextNum = lastNumber + 1;
+            subCategoryCode = `SUB-CAT-${String(nextNum).padStart(3, "0")}`;
+        }
+
         const data = await subCategoryDetails.findOne({ where: { sub_category_name } });
         if (data) {
-            return res.status(400).send({ code: 400, message: "Sub-Category Already Exists!" });
+            return res.status(400).send({ code: 400, message: "Sub Category Already Exists!" });
         }
         const response = await subCategoryDetails.create({
             category_id,
             sub_category_name,
+            sub_category_code: subCategoryCode,
             category_name,
             sub_category_description,
             is_popular_subcategory,
             sub_category_image: filePath ? baseUrl + filePath : '',
             sub_category_banner: filePath2 ? baseUrl + filePath2 : ''
         });
-        return res.status(200).send({ code: 200, message: "Sub-Category Created Successfully!", data: response });
+        return res.status(200).send({ code: 200, message: "Sub Category Created Successfully!", data: response });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ code: 500, message: "Internal Server Error" });
