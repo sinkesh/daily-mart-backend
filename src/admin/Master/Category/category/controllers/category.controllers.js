@@ -14,7 +14,7 @@ exports.Create_Category = async (req, res) => {
         filePath = filePath.replace(/^public\//, '');
 
         const getCategoryData = await categoryDetails.findOne({ where: { category_name: category_name } })
-        const lastCategory = await categoryDetails.findOne({ order: [['category_id', 'DESC']]  });
+        const lastCategory = await categoryDetails.findOne({ order: [['category_id', 'DESC']] });
 
         let categoryCode = "CAT-001";
 
@@ -29,6 +29,7 @@ exports.Create_Category = async (req, res) => {
             const response = await categoryDetails.create({
                 category_name,
                 category_code: categoryCode,
+                category_description,
                 category_image: baseUrl + filePath
             });
             return res.status(200).send({ code: 200, message: "Created Successfully!", data: response });
@@ -56,7 +57,7 @@ exports.Edit_Category = async (req, res) => {
             return res.status(400).send({ code: 400, message: "Category Already Exists" });
         }
 
-        let updatedData = { category_name, category_image };
+        let updatedData = { category_name, category_image, category_description };
 
         if (req.file) {
             let filePath = req.file.path.split(path.sep).join('/');
