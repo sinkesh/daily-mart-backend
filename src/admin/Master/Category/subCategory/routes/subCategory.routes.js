@@ -9,4 +9,5 @@ module.exports = app => {
     app.get("/api/v1/Get_All_Sub_Category", SubCategoryController.Get_All_Sub_Category);
     app.get("/api/v1/Get_ById_Sub_Category/:id", SubCategoryController.Get_ById_Sub_Category);
     app.delete("/api/v1/Delete_Sub_Category/:id", SubCategoryController.Delete_Sub_Category);
+    app.delete("/api/v1/Hard_Delete_Sub_Category/:id", SubCategoryController.Hard_Delete_Sub_Category);
 };

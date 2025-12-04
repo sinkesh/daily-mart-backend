@@ -7,7 +7,7 @@ const path = require('path');
 
 exports.Create_Category = async (req, res) => {
     try {
-        const { category_name } = req.body;
+        const { category_name, category_description } = req.body;
         const categoryImage = req.file;
 
         let filePath = categoryImage.path.split(path.sep).join('/');
@@ -45,7 +45,7 @@ exports.Create_Category = async (req, res) => {
 exports.Edit_Category = async (req, res) => {
     try {
         const categoryId = req.params.id;
-        const { category_name, category_image } = req.body;
+        const { category_name, category_image, category_description } = req.body;
 
         const editData = await categoryDetails.findOne({ where: { category_id: categoryId } });
         if (!editData) {
@@ -155,6 +155,21 @@ exports.Delete_Category = async (req, res) => {
         return res.status(200).send({ code: 200, message: "Status Updated Successfully!" });
     } catch (error) {
         console.log("error", error)
+        return res.status(500).send({ code: 500, message: "Internal Server Error", error: error.message });
+    }
+};
+
+exports.Hard_Delete_Category = async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const category = await categoryDetails.findOne({ where: { category_id: categoryId } });
+        if (!category) {
+            return res.status(404).send({ code: 404, message: "Category not found!" });
+        }
+        await categoryDetails.destroy({ where: { category_id: categoryId } });
+        return res.status(200).send({ code: 200, message: "Category permanently deleted successfully!" });
+    } catch (error) {
+        console.error("Error", error);
         return res.status(500).send({ code: 500, message: "Internal Server Error", error: error.message });
     }
 };

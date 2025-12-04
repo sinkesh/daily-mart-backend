@@ -15,13 +15,14 @@ exports.Create_Sub_Category = async (req, res) => {
         let filePath = subCategoryImage ? subCategoryImage.split(path.sep).join('/').replace(/^public\//, '') : '';
         let filePath2 = bannerImage ? bannerImage.split(path.sep).join('/').replace(/^public\//, '') : '';
 
-        const lastSubCategory = await subCategoryDetails.findOne({ order: [['sub_category_id', 'DESC']]  });
+        const lastSubCategory = await subCategoryDetails.findOne({ order: [['sub_category_id', 'DESC']] });
 
         let subCategoryCode = "SUB-CAT-001";
 
         if (lastSubCategory && lastSubCategory.sub_category_code) {
-            let lastNumber = parseInt(lastSubCategory.sub_category_code.split("-")[1]);
-            let nextNum = lastNumber + 1;
+            const parts = lastSubCategory.sub_category_code.split("-");
+            const lastNumber = parseInt(parts[parts.length - 1]); // last part
+            const nextNum = lastNumber + 1;
             subCategoryCode = `SUB-CAT-${String(nextNum).padStart(3, "0")}`;
         }
 
@@ -163,3 +164,17 @@ exports.Delete_Sub_Category = async (req, res) => {
     }
 };
 
+exports.Hard_Delete_Sub_Category = async (req, res) => {
+    try {
+        const subCategoryId = req.params.id;
+        const category = await subCategoryDetails.findOne({ where: { sub_category_id: subCategoryId } });
+        if (!category) {
+            return res.status(404).send({ code: 404, message: "Sub-category not found!" });
+        }
+        await subCategoryDetails.destroy({ where: { sub_category_id: subCategoryId } });
+        return res.status(200).send({ code: 200, message: "Sub-category permanently deleted successfully!" });
+    } catch (error) {
+        console.error("Error", error);
+        return res.status(500).send({ code: 500, message: "Internal Server Error", error: error.message });
+    }
+};

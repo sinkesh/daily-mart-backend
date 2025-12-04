@@ -9,4 +9,5 @@ module.exports = app => {
     app.get("/api/v1/Get_All_Category", CategoryController.Get_All_Category);
     app.get("/api/v1/Get_ById_Category/:id", CategoryController.Get_ById_Category);
     app.delete("/api/v1/Delete_Category/:id", CategoryController.Delete_Category);
+    app.delete("/api/v1/Hard_Delete_Category/:id", CategoryController.Hard_Delete_Category);
 };
